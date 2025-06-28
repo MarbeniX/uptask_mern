@@ -16,9 +16,7 @@ export async function createProject(formData : ProjectFormData){
 export async function getProjects(){
     try{
         const { data } = await api.get('/projects')
-        console.log(data)
         const result = projectListSchema.safeParse(data)
-        console.log(result)
         if(result.success){
             return result.data
         }else{
@@ -35,9 +33,7 @@ export async function getProjects(){
 export async function getProjectById(id: Project['_id']){
     try{
         const { data } = await api.get(`/projects/${id}`)
-        console.log(data)
         const result = projectSchema.safeParse(data)
-        console.log(result)
         if(result.success){
             return result.data
         }else{
@@ -76,5 +72,4 @@ export async function deleteProjectById(projectId: Project['_id']){
             throw new Error(error.response.data.error)
         }
     }
-
 }

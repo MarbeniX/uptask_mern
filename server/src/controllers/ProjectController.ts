@@ -5,7 +5,6 @@ import Task from "../models/task"
 export class ProjectController{
     static createProject = async(req: Request, res: Response) => {
         const project = new Project(req.body)
-        //Maanager assigned to the project 
         project.manager = req.user.id
         try {
             await project.save()
@@ -52,7 +51,7 @@ export class ProjectController{
                 res.status(404).send("Project not found")
                 return
             }
-            if(project.manager.toString() !== req.user.id) {
+            if(project.manager.toString() !== req.user.id) { 
                 res.status(403).send("You are not authorized to update this project")
                 return
             }

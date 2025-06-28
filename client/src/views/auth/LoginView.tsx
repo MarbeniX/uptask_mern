@@ -14,6 +14,7 @@ export default function LoginView() {
     }
 
     const navigate = useNavigate()
+    
     const { mutate } = useMutation({
         mutationFn: loginUser,
         onError: (error) => {

@@ -1,10 +1,11 @@
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import ErrorMessage from "../ErrorMessage";
 import { TeamMemberForm } from "@/types/index";
 import { findUserByEmail } from "@/services/TeamService";
 import SearchResult from "./SearchResult";
+import { ToastContainer } from "react-toastify";
 
 export default function AddMemberForm() {
     const initialValues: TeamMemberForm = {
@@ -13,7 +14,7 @@ export default function AddMemberForm() {
     const params = useParams()
     const projectId = params.id!
 
-    const { register, handleSubmit, reset, formState: { errors } } = useForm({ defaultValues: initialValues })
+    const { register, reset, handleSubmit, formState: { errors } } = useForm({ defaultValues: initialValues })
 
     const mutation = useMutation({
         mutationFn: findUserByEmail
@@ -25,6 +26,11 @@ export default function AddMemberForm() {
             formData
         }
         mutation.mutate(data)
+    }
+
+    const resetForm = () => {
+        reset()
+        mutation.reset()
     }
 
     return (
@@ -65,6 +71,8 @@ export default function AddMemberForm() {
                     value='Buscar Usuario'
                 />
             </form>
+        
+
             {mutation.isError && (
                 <ErrorMessage>{mutation.error.message}</ErrorMessage>
             )}
@@ -72,8 +80,10 @@ export default function AddMemberForm() {
                 <p className="text-center text-2xl font-bold">Buscando...</p>
             )}
             {mutation.data && (
-                <SearchResult user={mutation.data}/>
+                <SearchResult user={mutation.data} reset={resetForm}/>
             )}
+
+            <ToastContainer />
         </>
     )
 }
