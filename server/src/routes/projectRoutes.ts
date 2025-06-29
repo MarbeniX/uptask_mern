@@ -4,7 +4,7 @@ import { body, param } from 'express-validator'
 import { handleInputErrors } from '../middlewares/validation'
 import { TasksController } from '../controllers/TaskController'
 import { validateProjectExists } from '../middlewares/project'
-import { validateTasksExists } from '../middlewares/tasks'
+import { hasAuthorization, validateTasksExists } from '../middlewares/tasks'
 import { authenticate } from '../middlewares/auth'
 import { TeamController } from '../controllers/TeamController'
 
@@ -75,6 +75,7 @@ router.get('/:projectId/tasks/:taskId',
 )
 
 router.put('/:projectId/tasks/:taskId',
+    hasAuthorization,
     param('taskId')
         .isMongoId().withMessage('Invalid task ID'),
     body('name')
@@ -86,6 +87,7 @@ router.put('/:projectId/tasks/:taskId',
 )
 
 router.delete('/:projectId/tasks/:taskId',
+    hasAuthorization,
     param('taskId')
         .isMongoId().withMessage('Invalid task ID'),
     handleInputErrors,

@@ -29,3 +29,12 @@ export async function validateTasksExists(req: Request, res: Response, next: Nex
         res.status(500).send('Internal server error')
     }
 }
+
+export function hasAuthorization(req: Request, res: Response, next: NextFunction){
+    if(req.project.manager.toString() !== req.user.id.toString()){
+        const error = new Error('You do not have permission to perform this action')
+        res.status(403).send(error.message)
+        return
+    }
+    next()
+}
