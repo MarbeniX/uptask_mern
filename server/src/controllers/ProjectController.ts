@@ -33,7 +33,7 @@ export class ProjectController{
             const project = await Project.findById(req.params.id)
                 .populate({
                     path: 'tasks',
-                    populate: { path: 'completedBy' }
+                    populate: { path: 'completedBy.user' }
                 })
             if (!project) {
                 res.status(404).send("Project not found")

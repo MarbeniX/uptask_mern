@@ -93,8 +93,15 @@ export default function TaskModalDetails() {
                                     </Dialog.Title>
                                     <p className='text-lg text-slate-500 mb-2'>Descripción: {data.description}</p>
 
+                                    <p className='text-lg text-slate-500 mb-2'>Historial de cambios</p>
                                     {data.completedBy && (
-                                        <p>Completado por: {data.completedBy.username}</p>
+                                        <ul className='list-decimal pl-5'>
+                                            {data.completedBy.map((user) => (
+                                                <li key={user._id} className='text-lg font-bold mb-2'>
+                                                    {user.user.username} - {statusTranslations[user.status]}
+                                                </li>
+                                            ))}
+                                        </ul>
                                     )}
 
                                     <div className='my-5 space-y-3'>
