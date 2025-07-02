@@ -25,7 +25,9 @@ export class TasksController{
 
     static getTaskById = async(req: Request, res: Response) => {
         try{
-            const task = await Task.findById(req.task.id).populate({path: 'completedBy.user', select: 'id username email'})
+            const task = await Task.findById(req.task.id)
+                .populate({path: 'completedBy.user', select: 'id username email'})
+                .populate({path: 'notes', populate: {path: 'createdBy', select: 'id username email'}})
             res.json(task)
         }catch(error){
             res.status(500).send('Internal server error')
