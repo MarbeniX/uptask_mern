@@ -24,6 +24,7 @@ export type RequestConfirmationCodeForm = Pick<Auth, 'email'>
 export type ForgotPasswordForm = Pick<Auth, 'email'>
 export type NewPasswordForm = Pick<Auth, 'password' | 'passwordConfirmation'>
 export type ChangePasswordForm = z.infer<typeof changePasswordSchema>
+export type VerifyPasswordForm = Pick<Auth, 'password'>
 
 /** Users */
 export const userSchema = authSchema.pick({

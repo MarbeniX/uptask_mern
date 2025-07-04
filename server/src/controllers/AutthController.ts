@@ -221,4 +221,16 @@ export class AuthController{
             res.status(500).send(error)
         }
     }
+
+    static verifyPassword = async(req: Request, res: Response) => {
+        const { password } = req.body
+        const userExists = await User.findById(req.user.id)
+        const passwordMatch = await comparePasswords(password, userExists.password)
+        if(!passwordMatch){
+            const error = new Error("Invalid password")
+            res.status(401).send({error: error.message})
+            return
+        }
+        res.send("Password is valid")
+    }
 }

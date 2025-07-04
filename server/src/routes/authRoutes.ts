@@ -110,4 +110,12 @@ router.post('/profile/update-password',
     AuthController.updateProfilePassword
 )
 
+router.post('/profile/verify-password',
+    authenticate,
+    body('password')
+        .isLength({ min: 8 }).withMessage('Password must be at least 8 characters long'),
+    handleInputErrors,
+    AuthController.verifyPassword
+)
+
 export default router 
