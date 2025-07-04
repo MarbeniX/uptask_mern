@@ -82,4 +82,32 @@ router.get('/user',
     AuthController.user
 )
 
+/**Profile actions */
+router.put('/profile',
+    authenticate,
+    body('username')
+        .isLength({ min: 3 }).withMessage('Name must be at least 3 characters long'),
+    body('email')
+        .isEmail().withMessage('Email is not valid'),
+    handleInputErrors,
+    AuthController.updateUser    
+)
+
+router.post('/profile/update-password',
+    authenticate,
+    body('newPassword')
+        .isLength({ min: 8 }).withMessage('New password must be at least 8 characters long'),
+    body('password')
+        .isLength({ min: 8 }).withMessage('Password must be at least 6 characters long'),
+    body('passwordConfirmation')
+        .custom((value, { req }) => {
+            if (value !== req.body.password) {
+                throw new Error('Passwords do not match')
+            } 
+            return true
+        }),
+    handleInputErrors,
+    AuthController.updateProfilePassword
+)
+
 export default router 

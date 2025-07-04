@@ -185,4 +185,40 @@ export class AuthController{
     static user = async(req: Request, res: Response) => {
         res.json(req.user)
     }
+
+    static updateUser = async(req: Request, res: Response) => {
+        const { username, email } = req.body
+        const userExists = await User.findOne({email})
+        if(userExists && userExists.id !== req.user.id){
+            const error = new Error("Email is already in use")
+            res.status(400).send({error: error.message})
+            return
+        }
+        req.user.username = username
+        req.user.email = email
+        try{
+            await req.user.save()
+            res.send("User updated")
+        }catch(error){
+            res.status(500).send(error)
+        }
+    }
+
+    static updateProfilePassword = async(req: Request, res: Response) => {
+        const { newPassword, password } = req.body
+        const userExists = await User.findById(req.user.id)
+        const passwordMatch = await comparePasswords(password, userExists.password)
+        if(!passwordMatch){
+            const error = new Error("Invalid password")
+            res.status(401).send({error: error.message})
+            return
+        }
+        userExists.password = await hashPassword(newPassword)
+        try{
+            await userExists.save()
+            res.send("Password updated")
+        }catch(error){
+            res.status(500).send(error)
+        }
+    }
 }
