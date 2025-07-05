@@ -1,6 +1,6 @@
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { getProjectById } from "@/services/ProjectService"
+import { getFullProject } from "@/services/ProjectService"
 import AddTaskModal from "../../components/tasks/AddTaskModal"
 import TaskList from "@/components/tasks/TaskList"
 import EditTaskData from "@/components/tasks/EditTaskData"
@@ -17,7 +17,7 @@ export default function ProjectEdit() {
 
     const { data, isLoading, error } = useQuery({
         queryKey: ['editProject', projectID],
-        queryFn: () => getProjectById(projectID),
+        queryFn: () => getFullProject(projectID),
         retry: false
     })
 

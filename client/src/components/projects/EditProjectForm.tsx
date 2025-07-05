@@ -1,4 +1,4 @@
-import { Project, ProjectFormData } from "@/types/index";
+import { EditProjectFormData, Project, ProjectFormData } from "@/types/index";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import ProjectForm from "./ProyectForm";
@@ -7,7 +7,7 @@ import { updateProjectById } from "@/services/ProjectService";
 import { toast } from "react-toastify";
 
 type EditProjectFormProps = {
-    data: ProjectFormData,
+    data: EditProjectFormData,
     projectId: Project['_id']
 }
 
