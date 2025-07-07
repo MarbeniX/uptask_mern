@@ -1,10 +1,9 @@
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { deleteProjectById, getProjects } from "@/services/ProjectService"
+import { useQuery } from "@tanstack/react-query"
+import { getProjects } from "@/services/ProjectService"
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
-import { toast } from "react-toastify"
 import { userAuth } from "@/hooks/userAuth"
 import { isManager } from "@/utils/policies"
 import DeleteProjectModal from "@/components/profile/DeleteProjectModal"
