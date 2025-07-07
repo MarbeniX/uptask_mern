@@ -54,19 +54,10 @@ export class ProjectController{
 
     static updateProject = async(req: Request, res: Response) => {
         try{
-            const project = await Project.findById(req.params.id)
-            if (!project) {
-                res.status(404).send("Project not found")
-                return
-            }
-            if(project.manager.toString() !== req.user.id) { 
-                res.status(403).send("You are not authorized to update this project")
-                return
-            }
-            project.projectName = req.body.projectName
-            project.clientName = req.body.clientName
-            project.description = req.body.description
-            await project.save()
+            req.project.projectName = req.body.projectName
+            req.project.clientName = req.body.clientName
+            req.project.description = req.body.description
+            await req.project.save()
             res.send("Project updated")
         }catch(error){
             console.log(error)
@@ -75,19 +66,7 @@ export class ProjectController{
 
     static deleteProject = async(req: Request, res: Response) => {
         try{
-            const project = await Project.findById(req.params.id)
-            if (!project) {
-                res.status(404).send("Project not found")
-                return
-            }
-            if(project.manager.toString() !== req.user.id) {
-                res.status(403).send("You are not authorized to delete this project")
-                return
-            }
-            await Promise.all(project.tasks.map(async (taskId) => {
-                await Task.findByIdAndDelete(taskId)
-            }))
-            await project.deleteOne()
+            await req.project.deleteOne()
             res.send("Project deleted")
         }catch(error){
             console.log(error)
